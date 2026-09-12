@@ -12,24 +12,8 @@
 $ whoami
 ```
 
-I lead Core Experience at Cleo, its first Staff Product Designer, and built the
-governance and contribution model behind the app's information architecture and
-its design system, Cleonardo. Before that: Tandem Bank, the LEGO Group, BBC, ITV,
-MTV, Burberry, TalkTalk, Yale University Press and Radioplayer.
-
-Most interface problems turn out to be structural, so that's usually where I
-start — though sometimes the fix isn't solving the problem, it's changing how
-it's perceived.
-
-```
-$ cat now-building.md
-```
-
-I write a lot more code these days, with AI as the pair: personal projects,
-Figma plugins for the team, and production work at Cleo that goes through
-engineering review like anything else. It has changed how I design — closer to
-the material, fewer handoffs, and a faster answer to the only question that
-matters: did it actually work.
+Staff Product Designer at Cleo. Twelve years across fintech, broadcast and
+consumer apps.
 
 ```
 $ ls side-projects/
