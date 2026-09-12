@@ -38,7 +38,7 @@ $ ls side-projects/
 | | | |
 |---|---|---|
 | ⏱ | [**Time Dissonance**](https://time-dissonance.vercel.app/) | a small clock experiment |
-| ✍️ | [**Design4Lyf**](https://eye-for-type-rjm3.ooda.run/) | typography, for the love of it |
+| ✍️ | [**Eye for Type**](https://eye-for-type-rjm3.ooda.run/) | typography, for the love of it |
 | 🌙 | [**The Daily Ritual**](https://the-daily-ritual-woad.vercel.app/) | a quiet daily-habit tracker |
 | 🎄 | [**Brookwood Hunt**](https://brookwood-hunt.vercel.app/) | a Christmas scavenger hunt for the street |
 
