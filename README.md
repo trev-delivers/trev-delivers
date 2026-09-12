@@ -16,21 +16,10 @@ Staff Product Designer at Cleo. Twelve years across fintech, broadcast and
 consumer apps.
 
 ```
-$ ls side-projects/
-```
-
-| | | |
-|---|---|---|
-| ⏱ | [**Time Dissonance**](https://time-dissonance.vercel.app/) | a small clock experiment |
-| ✍️ | [**Eye for Type**](https://eye-for-type-rjm3.ooda.run/) | typography, for the love of it |
-| 🌙 | [**The Daily Ritual**](https://the-daily-ritual-woad.vercel.app/) | a quiet daily-habit tracker |
-| 🎄 | [**Brookwood Hunt**](https://brookwood-hunt.vercel.app/) | a Christmas scavenger hunt for the street |
-
-```
 $ open designedbytrev.vercel.app
 ```
 
-More of this — case studies, the design-systems work, the rest of it — lives at
+Case studies, side projects, the design-systems work — everything else lives at
 **[designedbytrev.vercel.app](https://designedbytrev.vercel.app/)**.
 
 <br>

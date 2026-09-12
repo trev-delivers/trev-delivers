@@ -24,17 +24,43 @@ const QUERY = `
       followers { totalCount }
       repositories(first: 100, ownerAffiliations: OWNER, isFork: false, privacy: PUBLIC) {
         totalCount
-        nodes {
-          stargazerCount
-          primaryLanguage { name }
-        }
+        nodes { stargazerCount }
       }
       contributionsCollection {
-        contributionCalendar { totalContributions }
+        contributionCalendar {
+          totalContributions
+          weeks { contributionDays { date contributionCount } }
+        }
       }
     }
   }
 `;
+
+// GitHub's calendar comes back oldest-week-first, each week
+// oldest-day-first, so flattening it is already in chronological
+// order — no sort needed before walking it for streaks.
+function computeStreaks(days) {
+  let longest = 0;
+  let running = 0;
+  for (const d of days) {
+    if (d.contributionCount > 0) {
+      running++;
+      longest = Math.max(longest, running);
+    } else {
+      running = 0;
+    }
+  }
+
+  // Current streak walks backward from the most recent day. A single
+  // trailing zero is allowed without breaking it — that's today, and
+  // today isn't over yet — but only one: yesterday still has to count.
+  let i = days.length - 1;
+  if (days[i] && days[i].contributionCount === 0) i--;
+  let current = 0;
+  for (; i >= 0 && days[i].contributionCount > 0; i--) current++;
+
+  return { longest, current };
+}
 
 async function fetchStats() {
   const res = await fetch('https://api.github.com/graphql', {
@@ -56,30 +82,18 @@ async function fetchStats() {
   const repos = user.repositories.nodes;
   const stars = repos.reduce((sum, r) => sum + r.stargazerCount, 0);
 
-  const langCounts = {};
-  repos.forEach((r) => {
-    if (!r.primaryLanguage) return;
-    langCounts[r.primaryLanguage.name] = (langCounts[r.primaryLanguage.name] || 0) + 1;
-  });
-  const topLangs = Object.entries(langCounts)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 4)
-    .map(([name]) => name);
+  const calendar = user.contributionsCollection.contributionCalendar;
+  const days = calendar.weeks.flatMap((w) => w.contributionDays);
+  const { longest, current } = computeStreaks(days);
 
   return {
     followers: user.followers.totalCount,
     repos: user.repositories.totalCount,
     stars,
-    contributions: user.contributionsCollection.contributionCalendar.totalContributions,
-    topLangs,
+    contributions: calendar.totalContributions,
+    currentStreak: current,
+    longestStreak: longest,
   };
-}
-
-// Escapes the handful of characters that would otherwise break out of
-// SVG text content — overkill for GitHub's own language names, but
-// cheap insurance since this runs unattended on a schedule.
-function esc(str) {
-  return String(str).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 }
 
 // The boot ring from designbytrev.vercel.app, reproduced statically
@@ -100,9 +114,12 @@ function bootRing(cx, cy, radius, litCount) {
   return out;
 }
 
+function plural(n, word) {
+  return `${n} ${word}${n === 1 ? '' : 's'}`;
+}
+
 function renderCard(stats) {
   const date = new Date().toISOString().slice(0, 10);
-  const langLine = stats.topLangs.length ? stats.topLangs.join(' · ') : '—';
 
   return `<svg width="640" height="220" viewBox="0 0 640 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Trev Morris GitHub stats card">
   <defs>
@@ -128,8 +145,8 @@ function renderCard(stats) {
   <line x1="140" y1="78" x2="616" y2="78" stroke="rgba(255,255,255,0.06)"/>
 
   <text x="140" y="104" font-family="ui-monospace,'JetBrains Mono',Menlo,Consolas,monospace" font-size="13" fill="#C4C8CB">${stats.contributions.toLocaleString()} contributions in the past year</text>
-  <text x="140" y="127" font-family="ui-monospace,'JetBrains Mono',Menlo,Consolas,monospace" font-size="13" fill="#C4C8CB">${stats.repos} repos &#183; ${stats.stars} stars &#183; ${stats.followers} followers</text>
-  <text x="140" y="150" font-family="ui-monospace,'JetBrains Mono',Menlo,Consolas,monospace" font-size="13" fill="#C4C8CB">${esc(langLine)}</text>
+  <text x="140" y="127" font-family="ui-monospace,'JetBrains Mono',Menlo,Consolas,monospace" font-size="13" fill="#C4C8CB">current streak ${plural(stats.currentStreak, 'day')} &#183; longest streak ${plural(stats.longestStreak, 'day')}</text>
+  <text x="140" y="150" font-family="ui-monospace,'JetBrains Mono',Menlo,Consolas,monospace" font-size="13" fill="#C4C8CB">${plural(stats.repos, 'public repo')} &#183; ${plural(stats.stars, 'star')} &#183; ${plural(stats.followers, 'follower')}</text>
 
   <line x1="140" y1="166" x2="616" y2="166" stroke="rgba(255,255,255,0.06)"/>
   <text x="140" y="190" font-family="ui-monospace,'JetBrains Mono',Menlo,Consolas,monospace" font-size="13.5" fill="#7C9AFF">I make complicated products feel obvious.</text>
