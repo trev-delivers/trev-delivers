@@ -33,5 +33,16 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add card.svg
-          git diff --cached --quiet && echo "No changes" || git commit -m "Update stats card"
-          git push
+          git diff --cached --quiet && { echo "No changes"; exit 0; }
+          git commit -m "Update stats card"
+          # A push right as the daily cron fires (or two manual runs
+          # close together) can race and get rejected as non-fast-
+          # forward — card.svg is the only thing this workflow ever
+          # touches, so rebasing onto whatever landed in between is
+          # always safe: there's nothing meaningful to conflict with,
+          # just a newer version of the same generated file.
+          for i in 1 2 3; do
+            git push && break
+            git fetch origin main
+            git rebase origin/main
+          done
