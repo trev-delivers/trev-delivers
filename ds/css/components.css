@@ -152,8 +152,8 @@
   padding-right:5px;
   background:linear-gradient(180deg,var(--ds-color-bg-alt),var(--ds-color-surface-raised));
   box-shadow:
-    inset 0 2px 5px var(--ds-shadow-color),
-    inset 0 -1px 0 var(--ds-shadow-highlight);
+    inset 0 2px 5px var(--ds-color-shadow-color),
+    inset 0 -1px 0 var(--ds-color-shadow-highlight);
   transition:border-color var(--ds-duration-fast) ease-out;
   will-change:transform;
   --t-input-error:var(--ds-color-accent-hover);
