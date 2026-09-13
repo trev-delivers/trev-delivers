@@ -14,7 +14,7 @@ import { tokens } from './ds/js/tokens.js';
 // The card is drawn in the same core theme designedbytrev is, read straight
 // from the design system rather than retyped as hex. An SVG committed to a
 // README cannot reference a stylesheet, so this is the one consumer that has
-// to take its tokens as values — which is why trev-ds emits a JS export at
+// to take its tokens as values — which is why obvious emits a JS export at
 // all. Refresh with `node scripts/sync-ds.mjs`.
 const t = tokens.themes.core;
 const px = (name) => parseFloat(tokens.primitives[name]);
