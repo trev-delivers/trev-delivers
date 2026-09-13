@@ -9,6 +9,31 @@
 // scope beyond that, so there's nothing extra to create or rotate.
 
 import fs from 'node:fs';
+import { tokens } from './ds/js/tokens.js';
+
+// The card is drawn in the same core theme designedbytrev is, read straight
+// from the design system rather than retyped as hex. An SVG committed to a
+// README cannot reference a stylesheet, so this is the one consumer that has
+// to take its tokens as values — which is why trev-ds emits a JS export at
+// all. Refresh with `node scripts/sync-ds.mjs`.
+const t = tokens.themes.core;
+const px = (name) => parseFloat(tokens.primitives[name]);
+
+const CARD = {
+  bg: t['--ds-color-bg'],
+  border: t['--ds-color-border'],
+  rule: t['--ds-color-border-subtle'],
+  title: t['--ds-color-text'],
+  body: t['--ds-color-text-dim'],
+  muted: t['--ds-color-text-muted'],
+  accent: t['--ds-color-accent-hover'],
+  mono: t['--ds-font-mono'],
+  // Card-only: the unlit LED and the timestamp sit below anything the system
+  // has a name for, and inventing tokens to cover one SVG would be worse than
+  // leaving two literals here.
+  ledOff: '#2A2D33',
+  stamp: '#5A5E64',
+};
 
 const TOKEN = process.env.GH_TOKEN;
 const LOGIN = process.env.GH_LOGIN || 'trev-delivers';
@@ -109,7 +134,7 @@ function bootRing(cx, cy, radius, litCount) {
     const x = cx + Math.cos(angle) * radius;
     const y = cy + Math.sin(angle) * radius;
     const lit = i < litCount;
-    out += `<rect x="${(x - dotSize / 2).toFixed(2)}" y="${(y - dotSize / 2).toFixed(2)}" width="${dotSize}" height="${dotSize}" rx="1.5" fill="${lit ? '#7C9AFF' : '#2A2D33'}"${lit ? ' filter="url(#glow)"' : ''}/>`;
+    out += `<rect x="${(x - dotSize / 2).toFixed(2)}" y="${(y - dotSize / 2).toFixed(2)}" width="${dotSize}" height="${dotSize}" rx="1.5" fill="${lit ? CARD.accent : CARD.ledOff}"${lit ? ' filter="url(#glow)"' : ''}/>`;
   }
   return out;
 }
@@ -135,23 +160,23 @@ function renderCard(stats) {
     </pattern>
   </defs>
 
-  <rect x="0.5" y="0.5" width="639" height="219" rx="14" fill="#0A0B0C" stroke="rgba(255,255,255,0.10)"/>
+  <rect x="0.5" y="0.5" width="639" height="219" rx="14" fill="${CARD.bg}" stroke="${CARD.border}"/>
   <rect x="0.5" y="0.5" width="639" height="219" rx="14" fill="url(#scanlines)"/>
 
   ${bootRing(70, 110, 34, Math.min(12, Math.max(3, Math.round((stats.contributions / 1500) * 12))))}
 
-  <text x="140" y="44" font-family="ui-monospace,'JetBrains Mono',Menlo,Consolas,monospace" font-size="20" font-weight="700" fill="#ECEDEE" letter-spacing="0.5">TREV MORRIS</text>
-  <text x="140" y="64" font-family="ui-monospace,'JetBrains Mono',Menlo,Consolas,monospace" font-size="12.5" fill="#8A8F94">Staff Product Designer &#8212; Cleo</text>
-  <line x1="140" y1="78" x2="616" y2="78" stroke="rgba(255,255,255,0.06)"/>
+  <text x="140" y="44" font-family="${CARD.mono}" font-size="20" font-weight="${tokens.primitives['--ds-weight-bold']}" fill="${CARD.title}" letter-spacing="0.5">TREV MORRIS</text>
+  <text x="140" y="64" font-family="${CARD.mono}" font-size="${px('--ds-text-mono')}" fill="${CARD.muted}">Staff Product Designer &#8212; Cleo</text>
+  <line x1="140" y1="78" x2="616" y2="78" stroke="${CARD.rule}"/>
 
-  <text x="140" y="104" font-family="ui-monospace,'JetBrains Mono',Menlo,Consolas,monospace" font-size="13" fill="#C4C8CB">${stats.contributions.toLocaleString()} contributions in the past year</text>
-  <text x="140" y="127" font-family="ui-monospace,'JetBrains Mono',Menlo,Consolas,monospace" font-size="13" fill="#C4C8CB">current streak ${plural(stats.currentStreak, 'day')} &#183; longest streak ${plural(stats.longestStreak, 'day')}</text>
-  <text x="140" y="150" font-family="ui-monospace,'JetBrains Mono',Menlo,Consolas,monospace" font-size="13" fill="#C4C8CB">${plural(stats.repos, 'public repo')} &#183; ${plural(stats.stars, 'star')} &#183; ${plural(stats.followers, 'follower')}</text>
+  <text x="140" y="104" font-family="${CARD.mono}" font-size="${px('--ds-text-xs')}" fill="${CARD.body}">${stats.contributions.toLocaleString()} contributions in the past year</text>
+  <text x="140" y="127" font-family="${CARD.mono}" font-size="${px('--ds-text-xs')}" fill="${CARD.body}">current streak ${plural(stats.currentStreak, 'day')} &#183; longest streak ${plural(stats.longestStreak, 'day')}</text>
+  <text x="140" y="150" font-family="${CARD.mono}" font-size="${px('--ds-text-xs')}" fill="${CARD.body}">${plural(stats.repos, 'public repo')} &#183; ${plural(stats.stars, 'star')} &#183; ${plural(stats.followers, 'follower')}</text>
 
-  <line x1="140" y1="166" x2="616" y2="166" stroke="rgba(255,255,255,0.06)"/>
-  <text x="140" y="190" font-family="ui-monospace,'JetBrains Mono',Menlo,Consolas,monospace" font-size="13.5" fill="#7C9AFF">I make complicated products feel obvious.</text>
+  <line x1="140" y1="166" x2="616" y2="166" stroke="${CARD.rule}"/>
+  <text x="140" y="190" font-family="${CARD.mono}" font-size="13.5" fill="${CARD.accent}">I make complicated products feel obvious.</text>
 
-  <text x="616" y="208" font-family="ui-monospace,'JetBrains Mono',Menlo,Consolas,monospace" font-size="10" fill="#5A5E64" text-anchor="end">auto-generated &#183; ${date}</text>
+  <text x="616" y="208" font-family="${CARD.mono}" font-size="10" fill="${CARD.stamp}" text-anchor="end">auto-generated &#183; ${date}</text>
 </svg>
 `;
 }
