@@ -12,15 +12,16 @@
 $ whoami
 ```
 
-Staff Product Designer at Cleo. Twelve years across fintech, broadcast and
-consumer apps.
+I lead Core Experience at Cleo, an AI money assistant used by seven million
+people, as its first Staff Product Designer. Twelve years across fintech,
+broadcast and consumer apps.
 
 ```
-$ open designedbytrev.vercel.app
+$ open designedbytrev.com
 ```
 
 Case studies, side projects, the design-systems work — everything else lives at
-**[designedbytrev.vercel.app](https://designedbytrev.vercel.app/)**.
+**[designedbytrev.com](https://designedbytrev.com/)**.
 
 <br>
 
