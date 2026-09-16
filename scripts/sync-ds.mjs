@@ -13,14 +13,14 @@
  *   node scripts/sync-ds.mjs              # pull main into ds/
  *   node scripts/sync-ds.mjs --ref v0.2.0 # pin a tag
  *   node scripts/sync-ds.mjs --check      # fail if ds/ is out of date
- *   DS_LOCAL=../trev-ds node scripts/sync-ds.mjs   # work against a checkout
+ *   DS_LOCAL=../obvious node scripts/sync-ds.mjs   # work against a checkout
  */
 import { cpSync, existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { execFileSync } from "node:child_process";
 
-const REPO = process.env.DS_REPO ?? "https://github.com/trev-delivers/trev-ds.git";
+const REPO = process.env.DS_REPO ?? "https://github.com/trev-delivers/obvious.git";
 const args = process.argv.slice(2);
 const ref = args.includes("--ref") ? args[args.indexOf("--ref") + 1] : "main";
 const check = args.includes("--check");
@@ -32,11 +32,11 @@ let cleanup = () => {};
 if (process.env.DS_LOCAL) {
   source = process.env.DS_LOCAL;
   if (!existsSync(join(source, "dist"))) {
-    console.error(`DS_LOCAL=${source} has no dist/. Run \`npm run build\` in trev-ds first.`);
+    console.error(`DS_LOCAL=${source} has no dist/. Run \`npm run build\` in obvious first.`);
     process.exit(1);
   }
 } else {
-  const tmp = mkdtempSync(join(tmpdir(), "trev-ds-"));
+  const tmp = mkdtempSync(join(tmpdir(), "obvious-"));
   cleanup = () => rmSync(tmp, { recursive: true, force: true });
   try {
     execFileSync("git", ["clone", "--depth", "1", "--branch", ref, REPO, tmp], { stdio: "pipe" });
@@ -60,7 +60,7 @@ try {
 } catch {
   /* DS_LOCAL may not be a checkout; the version still identifies the build */
 }
-const stamp = `trev-ds ${version} ${head} (ref: ${ref})\n`;
+const stamp = `obvious ${version} ${head} (ref: ${ref})\n`;
 
 if (check) {
   const current = existsSync(join(target, ".version")) ? readFileSync(join(target, ".version"), "utf8") : "(none)";

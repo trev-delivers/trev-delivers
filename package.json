@@ -1,5 +1,8 @@
 {
   "name": "trev-delivers",
   "private": true,
-  "type": "module"
+  "type": "module",
+  "scripts": {
+    "ds:audit": "node scripts/audit-ds.mjs"
+  }
 }
