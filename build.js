@@ -166,7 +166,7 @@ function renderCard(stats) {
   ${bootRing(70, 110, 34, Math.min(12, Math.max(3, Math.round((stats.contributions / 1500) * 12))))}
 
   <text x="140" y="44" font-family="${CARD.mono}" font-size="20" font-weight="${tokens.primitives['--ds-weight-bold']}" fill="${CARD.title}" letter-spacing="0.5">TREV MORRIS</text>
-  <text x="140" y="64" font-family="${CARD.mono}" font-size="${px('--ds-text-mono')}" fill="${CARD.muted}">Staff Product Designer &#8212; Cleo</text>
+  <text x="140" y="64" font-family="${CARD.mono}" font-size="${px('--ds-text-mono')}" fill="${CARD.muted}">Leads Core Experience &#8212; Cleo</text>
   <line x1="140" y1="78" x2="616" y2="78" stroke="${CARD.rule}"/>
 
   <text x="140" y="104" font-family="${CARD.mono}" font-size="${px('--ds-text-xs')}" fill="${CARD.body}">${stats.contributions.toLocaleString()} contributions in the past year</text>
