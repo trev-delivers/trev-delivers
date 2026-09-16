@@ -183,7 +183,7 @@ export const tokens = {
       "--ds-color-selection-text": "#FFFFFF"
     },
     "dissonance": {
-      "--ds-radius-base": "8px",
+      "--ds-radius-base": "3px",
       "--ds-density": "1",
       "--ds-font-display": "'Libre Baskerville', Georgia, serif",
       "--ds-font-sans": "'Libre Baskerville', Georgia, serif",

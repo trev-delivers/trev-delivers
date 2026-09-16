@@ -35,20 +35,29 @@ const SKIP_DIRS = new Set([
    anyway, so nothing binary gets read. */
 const EXTENSIONS = new Set([".css", ".scss", ".ts", ".tsx", ".js", ".jsx", ".mjs", ".html"]);
 
-/** The component families the system ships. A row is "used" if any class in
- *  its family appears anywhere in the app's own source. */
-const COMPONENTS = {
-  "t-input": "field",
-  "t-error-msg": "field",
-  "t-check-badge": "check-badge",
-  "t-check-blur-wrap": "check-badge",
-  "t-pro-btn": "pro-button",
-  "t-gradient-text": "gradient-text",
-  "t-think": "think",
-  "t-boot-ring": "boot-ring",
-  "t-link": "link",
-  "t-reveal": "reveal",
-};
+/** The component families the system ships, read out of the vendored copy
+ *  rather than listed here — a hand-kept list goes stale the first time
+ *  obvious grows a component, and silently: the new one just never shows up
+ *  as adopted. A family is "used" if any of its classes appears anywhere in
+ *  the app's own source. */
+function componentsIn(root) {
+  const dir = join(root, "ds", "css", "components");
+  const map = new Map();
+  if (!existsSync(dir)) return map;
+  for (const file of readdirSync(dir).filter((f) => f.endsWith(".css"))) {
+    const family = basename(file, ".css");
+    const css = readFileSync(join(dir, file), "utf8");
+    /* Only the classes the component names itself after: a modifier like
+       .t-pro-btn--icon is the same family as .t-pro-btn, and counting the
+       two separately would make one component look like two. */
+    for (const m of css.matchAll(/\.(t-[a-z0-9-]+)/g)) {
+      const cls = m[1];
+      if (cls.includes("--")) continue;
+      map.set(cls, family);
+    }
+  }
+  return map;
+}
 
 const PATTERNS = {
   /* A literal colour that could have been a token. url(#id) is an SVG
@@ -118,6 +127,7 @@ function audit(root) {
   const tokens = new Set();
   const components = new Set();
   const themes = new Set();
+  const catalogue = componentsIn(root);
   const bypass = Object.fromEntries(Object.keys(PATTERNS).map((k) => [k, []]));
 
   for (const file of files) {
@@ -125,7 +135,7 @@ function audit(root) {
     const rel = relative(root, file);
 
     for (const match of source.matchAll(/--ds-[a-z0-9-]+/g)) tokens.add(match[0]);
-    for (const [cls, family] of Object.entries(COMPONENTS)) {
+    for (const [cls, family] of catalogue) {
       if (new RegExp(`\\b${cls}\\b`).test(source)) components.add(family);
     }
     for (const match of source.matchAll(/ds\/css\/themes\/([a-z]+)\.css/g)) themes.add(match[1]);
@@ -151,6 +161,7 @@ function audit(root) {
     files: files.length,
     tokens: [...tokens].sort(),
     components: [...components].sort(),
+    catalogue: new Set(catalogue.values()).size,
     themes: [...themes].sort(),
     bypass,
     note: config.note,
@@ -181,7 +192,7 @@ for (const r of results) {
     pad(r.app, 20) +
       pad(r.files, 7) +
       pad(r.tokens.length, 8) +
-      pad(`${r.components.length}/8`, 12) +
+      pad(`${r.components.length}/${r.catalogue}`, 12) +
       pad(totalBypass(r), 8) +
       (r.themes.join(", ") || "—")
   );
