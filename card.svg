@@ -15,13 +15,13 @@
   <rect x="0.5" y="0.5" width="639" height="219" rx="14" fill="#0A0B0C" stroke="rgba(255, 255, 255, 0.10)"/>
   <rect x="0.5" y="0.5" width="639" height="219" rx="14" fill="url(#scanlines)"/>
 
-  <rect x="67.00" y="73.00" width="6" height="6" rx="1.5" fill="#7C9AFF" filter="url(#glow)"/><rect x="84.00" y="77.56" width="6" height="6" rx="1.5" fill="#7C9AFF" filter="url(#glow)"/><rect x="96.44" y="90.00" width="6" height="6" rx="1.5" fill="#7C9AFF" filter="url(#glow)"/><rect x="101.00" y="107.00" width="6" height="6" rx="1.5" fill="#2A2D33"/><rect x="96.44" y="124.00" width="6" height="6" rx="1.5" fill="#2A2D33"/><rect x="84.00" y="136.44" width="6" height="6" rx="1.5" fill="#2A2D33"/><rect x="67.00" y="141.00" width="6" height="6" rx="1.5" fill="#2A2D33"/><rect x="50.00" y="136.44" width="6" height="6" rx="1.5" fill="#2A2D33"/><rect x="37.56" y="124.00" width="6" height="6" rx="1.5" fill="#2A2D33"/><rect x="33.00" y="107.00" width="6" height="6" rx="1.5" fill="#2A2D33"/><rect x="37.56" y="90.00" width="6" height="6" rx="1.5" fill="#2A2D33"/><rect x="50.00" y="77.56" width="6" height="6" rx="1.5" fill="#2A2D33"/>
+  <rect x="67.00" y="73.00" width="6" height="6" rx="1.5" fill="#7C9AFF" filter="url(#glow)"/><rect x="84.00" y="77.56" width="6" height="6" rx="1.5" fill="#7C9AFF" filter="url(#glow)"/><rect x="96.44" y="90.00" width="6" height="6" rx="1.5" fill="#7C9AFF" filter="url(#glow)"/><rect x="101.00" y="107.00" width="6" height="6" rx="1.5" fill="#7C9AFF" filter="url(#glow)"/><rect x="96.44" y="124.00" width="6" height="6" rx="1.5" fill="#2A2D33"/><rect x="84.00" y="136.44" width="6" height="6" rx="1.5" fill="#2A2D33"/><rect x="67.00" y="141.00" width="6" height="6" rx="1.5" fill="#2A2D33"/><rect x="50.00" y="136.44" width="6" height="6" rx="1.5" fill="#2A2D33"/><rect x="37.56" y="124.00" width="6" height="6" rx="1.5" fill="#2A2D33"/><rect x="33.00" y="107.00" width="6" height="6" rx="1.5" fill="#2A2D33"/><rect x="37.56" y="90.00" width="6" height="6" rx="1.5" fill="#2A2D33"/><rect x="50.00" y="77.56" width="6" height="6" rx="1.5" fill="#2A2D33"/>
 
   <text x="140" y="44" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="20" font-weight="700" fill="#ECEDEE" letter-spacing="0.5">TREV MORRIS</text>
   <text x="140" y="64" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="12.5" fill="#8A8F94">Leads Core Experience &#8212; Cleo</text>
   <line x1="140" y1="78" x2="616" y2="78" stroke="rgba(255, 255, 255, 0.06)"/>
 
-  <text x="140" y="104" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="13" fill="#C4C8CB">434 contributions in the past year</text>
+  <text x="140" y="104" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="13" fill="#C4C8CB">438 contributions in the past year</text>
   <text x="140" y="127" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="13" fill="#C4C8CB">current streak 6 days &#183; longest streak 6 days</text>
   <text x="140" y="150" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="13" fill="#C4C8CB">3 public repos &#183; 0 stars &#183; 1 follower</text>
 
