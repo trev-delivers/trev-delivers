@@ -4,45 +4,62 @@ on:
   push:
     branches: [main]
   schedule:
-    # Once a day — GitHub stats don't move fast enough to need more,
-    # and it keeps this off everyone's Actions minutes unnecessarily.
+    # Once a day. GitHub stats don't move fast enough to need more.
     - cron: "17 6 * * *"
   workflow_dispatch: {}
 
-permissions:
-  contents: write
+permissions: {}
+
+# Two runs at once would race to push the same file.
+concurrency:
+  group: stats-card
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version: 20
+          node-version: 22
 
-      - name: Render card.svg
+      - name: Test build.js
+        run: npm test
+
+      - name: Draw card.svg
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_LOGIN: trev-delivers
         run: node build.js
 
-      - name: Commit card.svg if it changed
+      - name: Commit and push if anything changed
+        shell: bash
         run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add card.svg
-          git diff --cached --quiet && { echo "No changes"; exit 0; }
+          git add card.svg README.md
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
           git commit -m "Update stats card"
-          # A push right as the daily cron fires (or two manual runs
-          # close together) can race and get rejected as non-fast-
-          # forward — card.svg is the only thing this workflow ever
-          # touches, so rebasing onto whatever landed in between is
-          # always safe: there's nothing meaningful to conflict with,
-          # just a newer version of the same generated file.
+          # Another push can land between checkout and here. The bot only
+          # touches card.svg and the README's alt text, so rebasing onto it
+          # is safe. If every try fails, the job fails, so a stale card
+          # never sits behind a green tick.
           for i in 1 2 3; do
-            git push && break
+            if git push; then exit 0; fi
+            sleep $((i * 5))
             git fetch origin main
             git rebase origin/main
           done
+          echo "Couldn't push the card after 3 tries"
+          exit 1
+
+      # Last, so the card still updates when obvious has moved on. The job
+      # goes red until someone runs node scripts/sync-ds.mjs and commits ds/.
+      - name: Check ds/ matches obvious
+        run: node scripts/sync-ds.mjs --check

@@ -3,6 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "ds:audit": "node scripts/audit-ds.mjs"
+    "ds:audit": "node scripts/audit-ds.mjs --max 0",
+    "test": "node --test tests/*.test.mjs",
+    "ds:check": "node scripts/sync-ds.mjs --check",
+    "check": "npm test && npm run ds:check && npm run ds:audit"
   }
 }
