@@ -34,10 +34,10 @@ const prefersReducedMotion = () =>
 export function mountBootRing(el, { start = true } = {}) {
   if (!el) return { start() {}, destroy() {} };
   const cs = getComputedStyle(el);
-  const count = parseInt(cs.getPropertyValue("--boot-count"), 10) || 12;
-  const radius = parseFloat(cs.getPropertyValue("--boot-radius")) || 22;
-  const step = cssMs(cs.getPropertyValue("--boot-step"), 60);
-  const lead = cssMs(cs.getPropertyValue("--boot-lead"), 500);
+  const count = parseInt(cs.getPropertyValue("--boot-count"), 10) || 8;
+  const radius = parseFloat(cs.getPropertyValue("--boot-radius")) || 6;
+  const step = cssMs(cs.getPropertyValue("--boot-step"), 110);
+  const lead = cssMs(cs.getPropertyValue("--boot-lead"), 300);
 
   el.replaceChildren();
   for (let i = 0; i < count; i++) {

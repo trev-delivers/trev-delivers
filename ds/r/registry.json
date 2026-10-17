@@ -1,0 +1,85 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "obvious",
+  "homepage": "https://obvious-nine.vercel.app",
+  "items": [
+    {
+      "name": "motion",
+      "type": "registry:component",
+      "title": "Motion",
+      "description": "React wrappers for the transitions.dev snippets: Tabs, Badge, PopNumber, TextSwap, useReveal, SuccessCheck, Toggle, SearchField, Check, IconSwap, Matrix and Reel.",
+      "files": [
+        {
+          "path": "registry/obvious/motion.tsx",
+          "type": "registry:component",
+          "target": "components/obvious/motion.tsx"
+        },
+        {
+          "path": "registry/obvious/motion.css",
+          "type": "registry:file",
+          "target": "components/obvious/motion.css"
+        }
+      ]
+    },
+    {
+      "name": "sheet",
+      "type": "registry:component",
+      "title": "Sheet",
+      "description": "Bottom sheet on phones that drags down to close, centred dialog on bigger screens. Escape closes the top one; the page stays locked until all are gone.",
+      "registryDependencies": [
+        "https://obvious-nine.vercel.app/r/motion.json"
+      ],
+      "files": [
+        {
+          "path": "registry/obvious/Sheet.tsx",
+          "type": "registry:component",
+          "target": "components/obvious/Sheet.tsx"
+        },
+        {
+          "path": "registry/obvious/sheet.css",
+          "type": "registry:file",
+          "target": "components/obvious/sheet.css"
+        }
+      ]
+    },
+    {
+      "name": "toasts",
+      "type": "registry:component",
+      "title": "Toasts",
+      "description": "Stacked toasts. A new one rises in front, older ones step back, a fourth pushes the oldest out. useToasts() gives you toast(text, tone).",
+      "registryDependencies": [
+        "https://obvious-nine.vercel.app/r/motion.json"
+      ],
+      "files": [
+        {
+          "path": "registry/obvious/Toasts.tsx",
+          "type": "registry:component",
+          "target": "components/obvious/Toasts.tsx"
+        },
+        {
+          "path": "registry/obvious/toasts.css",
+          "type": "registry:file",
+          "target": "components/obvious/toasts.css"
+        }
+      ]
+    },
+    {
+      "name": "plus-menu",
+      "type": "registry:component",
+      "title": "Plus menu",
+      "description": "A + that grows into the menu it opens. Pass it items with a label, hint, icon and onSelect.",
+      "files": [
+        {
+          "path": "registry/obvious/PlusMenu.tsx",
+          "type": "registry:component",
+          "target": "components/obvious/PlusMenu.tsx"
+        },
+        {
+          "path": "registry/obvious/plus-menu.css",
+          "type": "registry:file",
+          "target": "components/obvious/plus-menu.css"
+        }
+      ]
+    }
+  ]
+}
