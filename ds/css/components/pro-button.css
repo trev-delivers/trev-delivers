@@ -11,7 +11,7 @@
   background:var(--probtn-bg,#fff);
   border-radius:var(--ds-radius-full);
   font-family:var(--ds-font-sans);font-weight:var(--ds-weight-medium);
-  font-size:var(--ds-text-xs);letter-spacing:.02em;
+  font-size:var(--ds-text-xs);
   line-height:1.4;
   color:var(--probtn-fg,#0f0f0f);
   white-space:nowrap;

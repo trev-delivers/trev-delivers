@@ -24,10 +24,13 @@
 }
 .t-badge-dot{
   display:flex;align-items:center;justify-content:center;
-  min-width:20px;height:20px;padding:0 5px;border-radius:999px;
-  background:#FF5A5F;color:#fff;
-  font-family:var(--mono);font-size:11px;font-weight:600;line-height:1;
-  box-shadow:0 0 0 2px var(--bg), 0 3px 8px -2px rgba(0,0,0,.5);
+  min-width:20px;height:20px;padding:0 5px;border-radius:var(--ds-radius-full);
+  /* accent-contrast is each theme's colour for text on a strong fill, so
+     the number stays readable on the darker reds and the dark sets. */
+  background:var(--ds-color-danger);color:var(--ds-color-accent-contrast);
+  font-family:var(--ds-font-sans);font-size:var(--ds-text-micro);font-weight:var(--ds-weight-semibold);line-height:1;
+  font-variant-numeric:tabular-nums;
+  box-shadow:0 0 0 2px var(--ds-color-bg), var(--ds-shadow-md);
   transform-origin:center;
   transform:scale(1);opacity:1;filter:blur(0);
   transition:
@@ -434,7 +437,7 @@
   background:var(--probtn-bg,#fff);
   border-radius:var(--ds-radius-full);
   font-family:var(--ds-font-sans);font-weight:var(--ds-weight-medium);
-  font-size:var(--ds-text-xs);letter-spacing:.02em;
+  font-size:var(--ds-text-xs);
   line-height:1.4;
   color:var(--probtn-fg,#0f0f0f);
   white-space:nowrap;
@@ -627,10 +630,21 @@
   bottom:calc(100% + 8px);right:0;left:auto;
   transform:translateY(0) scale(var(--tt-scale,.98));
   transform-origin:100% 100%;
-  padding:8px 12px;border-radius:8px;
-  background:#101215;border:1px solid var(--line2);color:var(--dim);
-  font-family:var(--mono);font-size:12px;white-space:nowrap;
-  box-shadow:0 12px 26px -14px rgba(0,0,0,.8);
+  padding:8px 12px;border-radius:var(--ds-radius-md);
+  background:var(--ds-color-bg-alt);border:1px solid var(--ds-color-border-subtle);color:var(--ds-color-text-dim);
+  font-family:var(--ds-font-sans);font-size:var(--ds-type-label-size);line-height:var(--ds-type-label-leading);
+  white-space:nowrap;
+  box-shadow:var(--ds-shadow-md);
   opacity:0;pointer-events:none;
-  transition:opacity 50ms ease-out,transform 50ms ease-out;
+  transition:opacity var(--ds-duration-instant) var(--ds-ease-out),transform var(--ds-duration-instant) var(--ds-ease-out);
+}
+/* Until 17 Oct 2026 this file had no rule to show the tooltip: the
+   portfolio's own stylesheet did that, so anywhere else it never appeared. */
+.t-tt-wrap:hover .t-tt,
+.t-tt-trigger:focus-visible + .t-tt{
+  opacity:1;transform:translateY(0) scale(1);
+  transition-duration:var(--ds-duration-fast);transition-delay:var(--ds-duration-instant);
+}
+@media (prefers-reduced-motion:reduce){
+  .t-tt{transition:none!important}
 }
