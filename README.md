@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="./card.svg" alt="Trev Morris — GitHub stats" width="640" />
+<img src="./card.svg" alt="Trev Morris on GitHub: 1,079 contributions in the past year, a current streak of 8 days, a longest streak of 17 days, 4 public repos, 0 stars and 2 followers." width="640" />
 
 <sub>the card above regenerates itself daily — see <a href="./build.js"><code>build.js</code></a></sub>
 
