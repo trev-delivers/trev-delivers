@@ -19,10 +19,13 @@
 }
 .t-badge-dot{
   display:flex;align-items:center;justify-content:center;
-  min-width:20px;height:20px;padding:0 5px;border-radius:999px;
-  background:#FF5A5F;color:#fff;
-  font-family:var(--mono);font-size:11px;font-weight:600;line-height:1;
-  box-shadow:0 0 0 2px var(--bg), 0 3px 8px -2px rgba(0,0,0,.5);
+  min-width:20px;height:20px;padding:0 5px;border-radius:var(--ds-radius-full);
+  /* accent-contrast is each theme's colour for text on a strong fill, so
+     the number stays readable on the darker reds and the dark sets. */
+  background:var(--ds-color-danger);color:var(--ds-color-accent-contrast);
+  font-family:var(--ds-font-sans);font-size:var(--ds-text-micro);font-weight:var(--ds-weight-semibold);line-height:1;
+  font-variant-numeric:tabular-nums;
+  box-shadow:0 0 0 2px var(--ds-color-bg), var(--ds-shadow-md);
   transform-origin:center;
   transform:scale(1);opacity:1;filter:blur(0);
   transition:
