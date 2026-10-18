@@ -59,6 +59,19 @@ jobs:
           echo "Couldn't push the card after 3 tries"
           exit 1
 
+      # obvious is private. With a read-only key in OBVIOUS_TOKEN, git can
+      # fetch it for the ds/ check.
+      - name: Let git read obvious
+        env:
+          OBVIOUS_TOKEN: ${{ secrets.OBVIOUS_TOKEN }}
+        shell: bash
+        run: |
+          if [ -n "$OBVIOUS_TOKEN" ]; then
+            git config --global url."https://x-access-token:${OBVIOUS_TOKEN}@github.com/trev-delivers/obvious".insteadOf "https://github.com/trev-delivers/obvious"
+          else
+            echo "OBVIOUS_TOKEN isn't set, so obvious can only be fetched while it's public."
+          fi
+
       # Last, so the card still updates when obvious has moved on. The job
       # goes red until someone runs node scripts/sync-ds.mjs and commits ds/.
       - name: Check ds/ matches obvious
