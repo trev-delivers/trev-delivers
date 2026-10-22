@@ -1,11 +1,6 @@
 name: Update stats card
 
 on:
-  push:
-    branches: [main]
-  schedule:
-    # Once a day. GitHub stats don't move fast enough to need more.
-    - cron: "17 6 * * *"
   workflow_dispatch: {}
 
 permissions: {}
