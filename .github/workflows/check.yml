@@ -1,6 +1,6 @@
 name: check
 on:
-  pull_request:
+  workflow_dispatch: {}
 permissions: {}
 concurrency:
   group: check-${{ github.ref }}

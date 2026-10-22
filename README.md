@@ -2,7 +2,7 @@
 
 <img src="./card.svg" alt="Trev Morris on GitHub: 1,607 contributions in the past year, a current streak of 12 days, a longest streak of 17 days, 3 public repos, 0 stars and 2 followers." width="640" />
 
-<sub>The card checks GitHub every morning and redraws itself when the numbers change. See <a href="./build.js"><code>build.js</code></a>.</sub>
+<sub>The card is drawn from my GitHub numbers whenever I run it. See <a href="./build.js"><code>build.js</code></a>.</sub>
 
 </div>
 

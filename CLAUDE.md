@@ -15,10 +15,12 @@ alt text in `README.md` so screen readers get them.
 
 ## How it ships
 
-`.github/workflows/build.yml` runs every morning at 06:17 UTC and on every
-push to `main`. It tests `build.js`, draws the card and commits it straight
-to `main`, but only if the numbers changed. Pull requests run
-`check.yml`.
+`.github/workflows/build.yml` tests `build.js`, draws the card and commits
+it straight to `main`, but only if the numbers changed. Since 22 Oct 2026 it
+no longer runs every morning or on push, to save Actions minutes: the card
+only updates when the workflow is run by hand from the repo's Actions tab
+("Update stats card", then "Run workflow"). `check.yml` is manual too, so
+`npm run check` run locally is what has to pass before merging.
 
 ## Careful with
 
@@ -28,4 +30,5 @@ to `main`, but only if the numbers changed. Pull requests run
 - The card follows the design rules: the theme's 2 faces, no mono, no
   capitals with tracking, no middle dots, glow or scanlines. GitHub shows it
   with the reader's own fonts, so it has to look right in system-ui too.
-- No date on the card. A date makes it change, and get committed, every day.
+- No date on the card. A date makes it change, and get committed, every
+  time the workflow runs.
