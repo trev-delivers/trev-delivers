@@ -9,7 +9,7 @@
 <br>
 
 I lead Core Experience at Cleo, an AI money assistant used by 7 million
-people, and I'm its first Staff Product Designer. 12 years across fintech,
+people, and I'm its first Staff Product Designer. 13 years across fintech,
 broadcast and consumer apps.
 
 Case studies, side projects and my design system work are on
