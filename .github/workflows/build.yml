@@ -18,6 +18,10 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          # The write token is handed to the push step alone, not kept in
+          # .git/config for every step after this.
+          persist-credentials: false
 
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
@@ -34,6 +38,8 @@ jobs:
 
       - name: Commit and push if anything changed
         shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
@@ -41,12 +47,14 @@ jobs:
           git add card.svg README.md
           if git diff --cached --quiet; then echo "No changes"; exit 0; fi
           git commit -m "Update stats card"
+          # The token goes in a header for the push itself and is never saved.
+          AUTH="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
           # Another push can land between checkout and here. The bot only
           # touches card.svg and the README's alt text, so rebasing onto it
           # is safe. If every try fails, the job fails, so a stale card
           # never sits behind a green tick.
           for i in 1 2 3; do
-            if git push; then exit 0; fi
+            if git -c http.extraheader="$AUTH" push; then exit 0; fi
             sleep $((i * 5))
             git fetch origin main
             git rebase origin/main
@@ -54,20 +62,21 @@ jobs:
           echo "Couldn't push the card after 3 tries"
           exit 1
 
-      # obvious is private. With a read-only key in OBVIOUS_TOKEN, git can
-      # fetch it for the ds/ check.
-      - name: Let git read obvious
+      # Last, so the card still updates when obvious has moved on. The job
+      # goes red until someone runs node scripts/sync-ds.mjs and commits ds/.
+      # obvious may be private. With a read-only key in OBVIOUS_TOKEN, git sends
+      # it as a header for this one step only (git reads these variables as
+      # per-command config), so it never lands in a git config file.
+      - name: Check ds/ matches obvious
         env:
           OBVIOUS_TOKEN: ${{ secrets.OBVIOUS_TOKEN }}
         shell: bash
         run: |
           if [ -n "$OBVIOUS_TOKEN" ]; then
-            git config --global url."https://x-access-token:${OBVIOUS_TOKEN}@github.com/trev-delivers/obvious".insteadOf "https://github.com/trev-delivers/obvious"
+            export GIT_CONFIG_COUNT=1
+            export GIT_CONFIG_KEY_0="http.https://github.com/trev-delivers/obvious.extraheader"
+            export GIT_CONFIG_VALUE_0="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$OBVIOUS_TOKEN" | base64 -w0)"
           else
             echo "OBVIOUS_TOKEN isn't set, so obvious can only be fetched while it's public."
           fi
-
-      # Last, so the card still updates when obvious has moved on. The job
-      # goes red until someone runs node scripts/sync-ds.mjs and commits ds/.
-      - name: Check ds/ matches obvious
-        run: node scripts/sync-ds.mjs --check
+          node scripts/sync-ds.mjs --check
